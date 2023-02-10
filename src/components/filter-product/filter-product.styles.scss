@@ -1,0 +1,40 @@
+.filter {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 20px;
+  padding-top: 80px;
+}
+
+.filterBy {
+  font-size: 22px;
+}
+
+.size {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.material {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.sizeTitle {
+  padding-left: 90px;
+}
+
+.materialTitle {
+  padding-left: 260px;
+  padding-bottom: 60px;
+}
+
+.select {
+  width: 100px;
+  height: 25px;
+  font-size: 15px;
+}
+.select1 {
+  width: 100px;
+  height: 25px;
+  font-size: 15px;
+}
