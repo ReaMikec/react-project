@@ -3,7 +3,7 @@ import { Fragment, useContext } from "react";
 
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
-import { CartContext, CartProvider } from "../../contexts/cart.context";
+import { CartContext } from "../../contexts/cart.context";
 
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import "./navigation.styles.scss";

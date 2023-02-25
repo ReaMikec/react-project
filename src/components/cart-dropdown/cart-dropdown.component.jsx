@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,9 +24,11 @@ const CartDropdown = () => {
           <CartItem key={item.id} cartItem={item} />
         ))}
       </div>
-      <Button onClick={goToCheckoutHandler}>GO TO CHECKOUT</Button>
+      <div className="cart-dropdown-footer">
+        <Button onClick={goToCheckoutHandler}>GO TO CHECKOUT</Button>
+      </div>
     </div>
   );
 };
 
-export default CartDropdown;
+export default observer(CartDropdown);

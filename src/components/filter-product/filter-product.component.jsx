@@ -9,10 +9,8 @@ const FilterProduct = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedMaterial, setSelectedMaterial] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [sizes, setSizes] = useState([]);
-  const [materials, setMaterials] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [setSizes] = useState([]);
+  const [setMaterials] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {

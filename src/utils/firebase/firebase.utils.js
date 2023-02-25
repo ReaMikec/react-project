@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -30,8 +29,7 @@ export const db = getFirestore();
 
 export const addCollectionAndDocuments = async (
   collectionKey,
-  objectsToAdd,
-  field
+  objectsToAdd
 ) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);

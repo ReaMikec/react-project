@@ -2,10 +2,12 @@ import { useContext } from "react";
 import { CartContext } from "../../contexts/cart.context";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 
+import { observer } from "mobx-react";
+
 import "./checkout.styles.scss";
 
 const Checkout = () => {
-  const { cartItems } = useContext(CartContext);
+  const checkoutStore = useContext(CartContext);
 
   return (
     <div className="checkout-container">
@@ -27,7 +29,7 @@ const Checkout = () => {
         </div>
       </div>
 
-      {cartItems.map((cartItem) => (
+      {checkoutStore.cartItems.map((cartItem) => (
         <CheckoutItem key={cartItem.id} cartItem={cartItem} />
       ))}
       <span className="total">Total: 0</span>
@@ -35,4 +37,4 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+export default observer(Checkout);

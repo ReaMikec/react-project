@@ -5,8 +5,6 @@ import Authentication from "./routes/authentication/authentication.component";
 import Shop from "./routes/shop/shop.component";
 import Checkout from "./routes/checkout/checkout.component";
 
-import { Firestore } from "./utils/firebase/firebase.utils";
-
 const App = () => {
   return (
     <Routes>

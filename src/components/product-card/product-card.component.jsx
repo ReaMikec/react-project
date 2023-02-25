@@ -1,10 +1,7 @@
 import { useContext } from "react";
-
 import "./product-card.styles.scss";
 import Button from "../button/button.component";
-
 import { CartContext } from "../../contexts/cart.context";
-
 import { Observer } from "mobx-react";
 import store from "../../store/store";
 
