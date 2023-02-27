@@ -10,6 +10,13 @@
   padding: 40px 20px;
   margin-top: 20px;
 }
+.form-field {
+  padding-top: 25px;
+  padding-left: 10px;
+}
+.form-buttons {
+  padding-top: 25px;
+}
 .add-product-button {
   width: 70px;
   color: white;
@@ -39,38 +46,10 @@
     border: none;
   }
 }
-.cancel-add-button {
-  width: 70px;
-  color: white;
-  font-size: 14px;
-  border: none;
-  background-color: black;
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgb(222, 50, 107);
-    border: none;
-  }
-}
 
 .category-title {
   font-size: 38px;
   margin-bottom: 25px;
   text-align: center;
   color: rgb(222, 50, 107);
-}
-
-#sort-select {
-  width: 200px;
-  height: 30px;
-  font-size: 15px;
-}
-.sort-container {
-  padding-left: 20px;
-  padding-top: 25px;
-}
-.sort-by {
-  color: rgb(222, 50, 107);
-  font-size: 18px;
-  padding-right: 5px;
 }

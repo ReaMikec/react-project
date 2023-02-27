@@ -1,9 +1,10 @@
-import { useState, useEffect, useContext, Fragment } from "react";
-import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import { useContext, Fragment, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import ProductCard from "../../components/product-card/product-card.component";
 import { CategoriesContext } from "../../contexts/categories.context";
 import { addCollectionAndDocuments } from "../../utils/firebase/firebase.utils";
+import CategoryStore from "../../store/categoryStore";
 
 import "./category.styles.scss";
 
@@ -12,15 +13,7 @@ const Category = observer(() => {
   const { categoriesMap, handleSortChange, sortBy } =
     useContext(CategoriesContext);
 
-  const [sortedProducts, setSortedProducts] = useState([]);
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newProduct, setNewProduct] = useState({
-    name: "",
-    size: "",
-    material: "",
-    price: 0,
-    imageUrl: "",
-  });
+  const categoryStore = CategoryStore;
 
   useEffect(() => {
     const unsortedProducts = categoriesMap[category] || [];
@@ -36,144 +29,110 @@ const Category = observer(() => {
     } else {
       sortedProducts = unsortedProducts;
     }
-    setSortedProducts(sortedProducts);
-  }, [categoriesMap, category, sortBy]);
+    categoryStore.setSortedProducts(sortedProducts);
+  }, [categoriesMap, category, categoryStore, sortBy]);
 
   const handleAddFormSubmit = (event) => {
     event.preventDefault();
-    addCollectionAndDocuments("products", [newProduct]);
-    setSortedProducts([...sortedProducts, newProduct]);
-    setNewProduct({ name: "", description: "", imageUrl: "", price: 0 });
-    setShowAddForm(false);
+    addCollectionAndDocuments("products", [categoryStore.newProduct]);
+    categoryStore.setSortedProducts([
+      ...categoryStore.sortedProducts,
+      categoryStore.newProduct,
+    ]);
+    categoryStore.resetNewProduct();
+    categoryStore.setShowAddForm(false);
   };
 
   const handleNewProductChange = (event) => {
     const { name, value } = event.target;
-    setNewProduct({ ...newProduct, [name]: value });
-  };
-
-  const handleRemoveImage = (productId, productImageUrl) => {
-    const updatedProducts = sortedProducts.map((product) => {
-      if (product.id === productId) {
-        const updatedImages = product.imageUrl
-          .split(",")
-          .filter((url) => url !== productImageUrl)
-          .join(",");
-        return { ...product, imageUrl: updatedImages };
-      }
-      return product;
-    });
-    setSortedProducts(updatedProducts);
+    categoryStore.setNewProduct({ ...categoryStore.newProduct, [name]: value });
   };
 
   return (
-    <Fragment>
-      <div className="sort-container">
-        <label htmlFor="sort-select" className="sort-by">
-          Sort By:
-        </label>
-        <select id="sort-select" onChange={handleSortChange} value={sortBy}>
-          <option value="price-desc">Price (Low to High)</option>
-          <option value="price-asc">Price (High to Low)</option>
-        </select>
+    <div className="category-page">
+      <div className="category-header">
+        <h1>{category}</h1>
+        <form>
+          <label htmlFor="sort-by">Sort by:</label>
+          <select id="sort-by" value={sortBy} onChange={handleSortChange}>
+            <option value="default">Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+          </select>
+        </form>
       </div>
-
-      <h2 className="category-title">{category.toUpperCase()}</h2>
-      <div className="category-container">
-        {sortedProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            handleRemoveImage={handleRemoveImage}
-          />
-        ))}
-      </div>
-
-      {showAddForm ? (
-        <form onSubmit={handleAddFormSubmit}>
-          <div className="add-product-form">
-            <div className="form-group">
-              <label htmlFor="name-input">Name:</label>
-              <input
-                id="name-input"
-                type="text"
-                name="name"
-                value={newProduct.name}
-                onChange={handleNewProductChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="size-input">Size:</label>
-              <input
-                id="size-input"
-                type="text"
-                name="size"
-                value={newProduct.size}
-                onChange={handleNewProductChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="material-input">Material:</label>
-              <input
-                id="material-input"
-                type="text"
-                name="material"
-                value={newProduct.material}
-                onChange={handleNewProductChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="price-input">Price: </label>
-              <input
-                id="price-input"
-                type="number"
-                name="price"
-                value={newProduct.price}
-                onChange={handleNewProductChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="image-url-input">Image URL:</label>
-              <input
-                id="image-url-input"
-                type="url"
-                name="imageUrl"
-                value={newProduct.imageUrl}
-                onChange={handleNewProductChange}
-                required
-              />
-            </div>
-
-            <button className="add-product-button" type="submit">
-              Add Product
-            </button>
+      {categoryStore.showAddForm ? (
+        <form className="add-product-form" onSubmit={handleAddFormSubmit}>
+          <h2>Add Product</h2>
+          <div className="form-field">
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={categoryStore.newProduct.name}
+              onChange={handleNewProductChange}
+              required
+            />
+          </div>
+          <div className="form-field">
+            <label htmlFor="description">Description:</label>
+            <input
+              id="description"
+              name="description"
+              value={categoryStore.newProduct.description}
+              onChange={handleNewProductChange}
+              required
+            />
+          </div>
+          <div className="form-field">
+            <label htmlFor="price">Price:</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={categoryStore.newProduct.price}
+              onChange={handleNewProductChange}
+              required
+            />
+          </div>
+          <div className="form-field">
+            <label htmlFor="imageUrl">Image URL:</label>
+            <input
+              type="text"
+              id="imageUrl"
+              name="imageUrl"
+              value={categoryStore.newProduct.imageUrl}
+              onChange={handleNewProductChange}
+              required
+            />
+          </div>
+          <div className="form-buttons">
+            <button type="submit">Add Product</button>
             <button
-              className="cancel-add-button"
               type="button"
-              onClick={() => setShowAddForm(false)}
+              onClick={() => categoryStore.setShowAddForm(false)}
             >
               Cancel
             </button>
           </div>
         </form>
       ) : (
-        <div className="add-product-button-container">
-          <button
-            className="add-product-button1"
-            onClick={() => setShowAddForm(true)}
-          >
-            ADD PRODUCT
-          </button>
-        </div>
+        <button
+          className="add-product-button"
+          onClick={() => categoryStore.setShowAddForm(true)}
+        >
+          Add Product
+        </button>
       )}
-    </Fragment>
+      <div className="category-container">
+        {categoryStore.sortedProducts.map((product) => (
+          <Fragment key={product.id}>
+            <ProductCard product={product} />
+          </Fragment>
+        ))}
+      </div>
+    </div>
   );
 });
 
